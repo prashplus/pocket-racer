@@ -37,6 +37,9 @@ const INITIAL_BASE_SPEED = 32;
 const MAX_BASE_SPEED = 68;
 const BOOST_SPEED_BONUS = 36;
 
+let lastSteerTime = 0;
+const STEER_COOLDOWN_MS = 120;
+
 export const useGameStore = create<GameState>((set, get) => {
   const savedHighScore = parseInt(localStorage.getItem('pocket_racer_highscore') || '0', 10);
   const savedTheme = (localStorage.getItem('pocket_racer_theme') as 'dark' | 'light') || 'dark';
@@ -58,6 +61,7 @@ export const useGameStore = create<GameState>((set, get) => {
     trauma: 0,
 
     startGame: () => {
+      lastSteerTime = 0;
       soundEngine.startEngine();
       set({
         status: 'PLAYING',
@@ -74,24 +78,32 @@ export const useGameStore = create<GameState>((set, get) => {
     },
 
     steerLeft: () => {
+      const now = performance.now();
+      if (now - lastSteerTime < STEER_COOLDOWN_MS) return;
       const { status, lane } = get();
       if (status !== 'PLAYING') return;
       if (lane === 1) {
+        lastSteerTime = now;
         set({ lane: 0 });
         soundEngine.playWhooshSound();
       } else if (lane === 0) {
+        lastSteerTime = now;
         set({ lane: -1 });
         soundEngine.playWhooshSound();
       }
     },
 
     steerRight: () => {
+      const now = performance.now();
+      if (now - lastSteerTime < STEER_COOLDOWN_MS) return;
       const { status, lane } = get();
       if (status !== 'PLAYING') return;
       if (lane === -1) {
+        lastSteerTime = now;
         set({ lane: 0 });
         soundEngine.playWhooshSound();
       } else if (lane === 0) {
+        lastSteerTime = now;
         set({ lane: 1 });
         soundEngine.playWhooshSound();
       }

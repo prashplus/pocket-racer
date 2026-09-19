@@ -16,24 +16,24 @@ export const MobileControls: React.FC = () => {
       {/* Steering Controls (Left & Right) */}
       <div className="flex items-center gap-3 pointer-events-auto">
         <button
-          onTouchStart={(e) => {
+          type="button"
+          onPointerDown={(e) => {
             e.preventDefault();
             steerLeft();
           }}
-          onMouseDown={steerLeft}
-          className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-slate-900/80 active:bg-cyan-500/40 border border-slate-700/80 active:border-cyan-400 text-cyan-400 active:scale-90 flex items-center justify-center backdrop-blur-md shadow-2xl transition-transform cursor-pointer touch-none"
+          className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-slate-900/80 active:bg-cyan-500/40 border border-slate-700/80 active:border-cyan-400 text-cyan-400 active:scale-90 flex items-center justify-center backdrop-blur-md shadow-2xl transition-transform cursor-pointer touch-none select-none"
           aria-label="Steer Left"
         >
           <ChevronLeft className="w-8 h-8" />
         </button>
 
         <button
-          onTouchStart={(e) => {
+          type="button"
+          onPointerDown={(e) => {
             e.preventDefault();
             steerRight();
           }}
-          onMouseDown={steerRight}
-          className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-slate-900/80 active:bg-cyan-500/40 border border-slate-700/80 active:border-cyan-400 text-cyan-400 active:scale-90 flex items-center justify-center backdrop-blur-md shadow-2xl transition-transform cursor-pointer touch-none"
+          className="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-slate-900/80 active:bg-cyan-500/40 border border-slate-700/80 active:border-cyan-400 text-cyan-400 active:scale-90 flex items-center justify-center backdrop-blur-md shadow-2xl transition-transform cursor-pointer touch-none select-none"
           aria-label="Steer Right"
         >
           <ChevronRight className="w-8 h-8" />
@@ -43,18 +43,27 @@ export const MobileControls: React.FC = () => {
       {/* Nitro Boost Action Button */}
       <div className="pointer-events-auto">
         <button
-          onTouchStart={(e) => {
+          type="button"
+          onPointerDown={(e) => {
             e.preventDefault();
+            try {
+              (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+            } catch {
+              // ignore
+            }
             setBoosting(true);
           }}
-          onTouchEnd={(e) => {
+          onPointerUp={(e) => {
             e.preventDefault();
+            try {
+              (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+            } catch {
+              // ignore
+            }
             setBoosting(false);
           }}
-          onMouseDown={() => setBoosting(true)}
-          onMouseUp={() => setBoosting(false)}
-          onMouseLeave={() => setBoosting(false)}
-          className={`w-20 h-20 sm:w-22 sm:h-22 rounded-full border flex flex-col items-center justify-center backdrop-blur-md shadow-2xl transition-all cursor-pointer touch-none active:scale-90 ${
+          onPointerCancel={() => setBoosting(false)}
+          className={`w-20 h-20 sm:w-22 sm:h-22 rounded-full border flex flex-col items-center justify-center backdrop-blur-md shadow-2xl transition-all cursor-pointer touch-none select-none active:scale-90 ${
             isBoosting
               ? 'bg-pink-600/80 border-pink-400 text-white neon-glow-pink scale-95'
               : 'bg-slate-900/80 border-slate-700/80 text-pink-400 hover:border-pink-500/60'
