@@ -10,6 +10,14 @@
 
 ---
 
+## 📸 Screenshots
+
+| 🎮 Arcade Main Menu | ☀️ Daylight Racing (Light Mode) | 🌙 Cyber Highway (Dark Mode) |
+|:---:|:---:|:---:|
+| <img src="./public/screenshot-menu.png" alt="Pocket Racer Main Menu" width="260" /> | <img src="./public/screenshot-daylight.png" alt="Light Mode Daylight Racing" width="260" /> | <img src="./public/screenshot-synthwave.png" alt="Dark Mode Synthwave Night" width="260" /> |
+
+---
+
 ## ✨ Features
 
 - 🏎️ **Realistic 3D Supercar**:
